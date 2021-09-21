@@ -1,0 +1,11 @@
+freebsd_instance:
+  image_family: freebsd-14-0-snap
+
+task:
+  script:
+    - kldstat
+    - sysctl -i -n kern.features.vimage
+    - ifconfig epair create
+    - jail -c name=cirrus persist vnet vnet.interface=epair0a
+    - ifconfig
+    - jls
