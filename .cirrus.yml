@@ -10,24 +10,7 @@ task:
     firewall_ifconfig_lan_name: em1
 
   setup_script:
-    - kldload pf
-    - outa=$(ifconfig epair create)
-    - ina=$(ifconfig epair create)
-    - out=${outa%a}
-    - in=${ina%a}
-    - jail -c name=firewall persist vnet vnet.interface=${out}a vnet.interface=${in}a
-    - jail -c name=wan persist vnet vnet.interface=${out}b
-    - jail -c name=lan persist vnet vnet.interface=${in}b
-    - jexec wan ifconfig ${out}b ${wan_ifconfig_if0}
-    - jexec firewall ifconfig ${out}a inet 192.0.2.2/30
-    - jexec firewall ifconfig ${in}a inet 10.0.0.1/24
-    - jexec firewall ifconfig ${out}a name ${firewall_ifconfig_wan_name}
-    - jexec firewall ifconfig ${in}a name ${firewall_ifconfig_lan_name}
-    - jexec firewall sysctl net.inet.ip.forwarding=1
-    - jexec firewall pfctl -e
-    - jexec firewall pfctl -F all -f ${CIRRUS_WORKING_DIR}/pf.conf
-    - jexec lan ifconfig ${in}b ${lan_ifconfig_if0}
-    - jexec lan route add default ${lan_defaultrouter}
+    - sh .setup/setup.sh
 
   test_script:
     - jexec lan ping -c 3 192.0.2.1
