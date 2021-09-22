@@ -17,8 +17,8 @@ jail -c name=lan persist vnet vnet.interface=${in}b
 jexec wan ifconfig ${out}b ${wan_ifconfig}
 
 # setup firewall
-jexec firewall ifconfig ${out}a inet 192.0.2.2/30
-jexec firewall ifconfig ${in}a inet 10.0.0.1/24
+jexec firewall ifconfig ${out}a ${firewall_ifconfig_wan}
+jexec firewall ifconfig ${in}a ${firewall_ifconfig_lan}
 jexec firewall ifconfig ${out}a name ${firewall_ifconfig_wan_name}
 jexec firewall ifconfig ${in}a name ${firewall_ifconfig_lan_name}
 jexec firewall sysctl net.inet.ip.forwarding=1
