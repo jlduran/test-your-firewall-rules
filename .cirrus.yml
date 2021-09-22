@@ -2,6 +2,10 @@ freebsd_instance:
   image_family: freebsd-14-0-snap
 
 task:
+  env:
+    inside_ifconfig_if0: "inet 10.0.0.2/24"
+    inside_defaultrouter: "10.0.0.1"
+
   script:
     - kldload pf
     - outa=$(ifconfig epair create)
@@ -16,8 +20,8 @@ task:
     - jexec firewall ifconfig ${in}a inet 10.0.0.1/24
     - jexec firewall sysctl net.inet.ip.forwarding=1
     - jexec firewall pfctl -f ${CIRRUS_WORKING_DIR}/pf.conf
-    - jexec inside ifconfig ${in}b inet 10.0.0.2/24
-    - jexec inside route add default 10.0.0.1
+    - jexec inside ifconfig ${in}b ${inside_ifconfig_if0}
+    - jexec inside route add default ${inside_defaultrouter}
     - jexec outside route add default 192.0.2.2
     - jexec inside ping -c 3 192.0.2.1
     - jexec firewall pfctl -s all
