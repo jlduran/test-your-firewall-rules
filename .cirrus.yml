@@ -3,17 +3,23 @@ freebsd_instance:
 
 env:
   # LAN configuration
-  lan_ifconfig: "inet 10.0.0.2/24"
-  lan_defaultrouter: 10.0.0.1
+  lan_ifconfig: "inet 192.168.1.2/24"
+  lan_defaultrouter: 192.168.1.1
+
+  # DMZ configuration
+  dmz_ifconfig: "inet 192.168.2.2/24"
+  dmz_defaultrouter: 192.168.2.1
 
   # WAN configuration
   wan_ifconfig: "inet 192.0.2.1/30"
 
   # Firewall configuration
   firewall_ifconfig_wan: "inet 192.0.2.2/30"
-  firewall_ifconfig_lan: "inet 10.0.0.1/24"
-  firewall_ifconfig_wan_name: em0
-  firewall_ifconfig_lan_name: em1
+  firewall_ifconfig_lan: "inet 192.168.1.1/24"
+  firewall_ifconfig_dmz: "inet 192.168.2.1/24"
+  firewall_ifconfig_wan_name: octe0
+  firewall_ifconfig_lan_name: octe1
+  firewall_ifconfig_dmz_name: octe2
 
 task:
   setup_script:
@@ -21,6 +27,7 @@ task:
 
   tcpdump_wan_background_script: jexec firewall tcpdump -c 8 -ennlSvvXX -i ${firewall_ifconfig_wan_name}
   tcpdump_lan_background_script: jexec firewall tcpdump -c 8 -ennlSvvXX -i ${firewall_ifconfig_lan_name}
+  tcpdump_lan_background_script: jexec firewall tcpdump -c 8 -ennlSvvXX -i ${firewall_ifconfig_dmz_name}
 
   tests_script:
     - sh tests/*.sh
