@@ -3,14 +3,19 @@ freebsd_instance:
 
 task:
   env:
-    lan_ifconfig_if0: "inet 10.0.0.2/24"
+    # LAN configuration
+    lan_ifconfig: "inet 10.0.0.2/24"
     lan_defaultrouter: "10.0.0.1"
-    wan_ifconfig_if0: "inet 192.0.2.1/30"
+
+    # WAN configuration
+    wan_ifconfig: "inet 192.0.2.1/30"
+
+    # Firewall configuration
     firewall_ifconfig_wan_name: em0
     firewall_ifconfig_lan_name: em1
 
   setup_script:
     - sh .setup/setup.sh
 
-  test_script:
-    - jexec lan ping -c 3 192.0.2.1
+  tests_script:
+    - sh tests/*.sh
