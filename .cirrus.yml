@@ -26,6 +26,7 @@ task:
 
   tests_script:
     - sh tests/*.sh
+    - sleep 2
 
   #always:
   # tcpdump.out_artifacts:
