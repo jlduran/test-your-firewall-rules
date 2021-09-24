@@ -1,23 +1,33 @@
 freebsd_instance:
   image_family: freebsd-14-0-snap
 
+env:
+  # LAN configuration
+  lan_ifconfig: "inet 10.0.0.2/24"
+  lan_defaultrouter: 10.0.0.1
+
+  # WAN configuration
+  wan_ifconfig: "inet 192.0.2.1/30"
+
+  # Firewall configuration
+  firewall_ifconfig_wan: "inet 192.0.2.2/30"
+  firewall_ifconfig_lan: "inet 10.0.0.1/24"
+  firewall_ifconfig_wan_name: em0
+  firewall_ifconfig_lan_name: em1
+
 task:
-  env:
-    # LAN configuration
-    lan_ifconfig: "inet 10.0.0.2/24"
-    lan_defaultrouter: 10.0.0.1
-
-    # WAN configuration
-    wan_ifconfig: "inet 192.0.2.1/30"
-
-    # Firewall configuration
-    firewall_ifconfig_wan: "inet 192.0.2.2/30"
-    firewall_ifconfig_lan: "inet 10.0.0.1/24"
-    firewall_ifconfig_wan_name: em0
-    firewall_ifconfig_lan_name: em1
-
   setup_script:
     - sh .setup/setup.sh
 
+  tcpdump_background_script:
+    #- sh .tools/dtrace.sh
+    #- sh .tools/flamegraph.sh
+    - sh .tools/tcpdump.sh
+
   tests_script:
     - sh tests/*.sh
+
+  #always:
+  # tcpdump.out_artifacts:
+  #   path: ${CIRRUS_WORKING_DIR}/tcpdump.out
+  #   type: text/plain
