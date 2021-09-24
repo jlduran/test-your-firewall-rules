@@ -19,16 +19,9 @@ task:
   setup_script:
     - sh .setup/setup.sh
 
-  tcpdump_background_script:
-    #- sh .tools/dtrace.sh
-    #- sh .tools/flamegraph.sh
-    - sh .tools/tcpdump.sh
+  tcpdump_wan_background_script: jexec firewall tcpdump -c 8 -ennlSvvXX -i ${firewall_ifconfig_wan_name}
+  tcpdump_lan_background_script: jexec firewall tcpdump -c 8 -ennlSvvXX -i ${firewall_ifconfig_lan_name}
 
   tests_script:
     - sh tests/*.sh
-    - sleep 2
-
-  #always:
-  # tcpdump.out_artifacts:
-  #   path: ${CIRRUS_WORKING_DIR}/tcpdump.out
-  #   type: text/plain
+    - sleep 2 # XXX wait a whie before teardown
