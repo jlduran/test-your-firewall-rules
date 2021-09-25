@@ -25,10 +25,15 @@ task:
   setup_script:
     - sh .setup/setup.sh
 
-  tcpdump_wan_background_script: jexec firewall tcpdump -c 8 -ennlSvvXX -i ${firewall_ifconfig_wan_name}
-  tcpdump_lan_background_script: jexec firewall tcpdump -c 8 -ennlSvvXX -i ${firewall_ifconfig_lan_name}
-  tcpdump_lan_background_script: jexec firewall tcpdump -c 8 -ennlSvvXX -i ${firewall_ifconfig_dmz_name}
+  tcpdump_wan_background_script: jexec firewall tcpdump -ennlSvvXX -i ${firewall_ifconfig_wan_name}
+  tcpdump_lan_background_script: jexec firewall tcpdump -ennlSvvXX -i ${firewall_ifconfig_lan_name}
+  tcpdump_dmz_background_script: jexec firewall tcpdump -ennlSvvXX -i ${firewall_ifconfig_dmz_name}
 
-  tests_script:
-    - sh tests/*.sh
+  # XXX Figure out if Cirrus has a matrix similar to GitHub Actions to avoid repetition
+  test_nat_outgoing_traffic_script:
+    - sh tests/nat_outgoing_traffic.sh
+    - sleep 2 # XXX wait a whie before teardown
+
+  test_reject_anything_with_spoofed_addresses_script:
+    - sh tests/reject_anything_with_spoofed_addresses.sh
     - sleep 2 # XXX wait a whie before teardown
