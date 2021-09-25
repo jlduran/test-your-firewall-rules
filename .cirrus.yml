@@ -38,3 +38,7 @@ task:
   test_reject_anything_with_spoofed_addresses_script:
     - sh tests/reject_anything_with_spoofed_addresses.sh
     - sleep 2 # XXX wait a whie before teardown
+
+  test_allow_lan_to_ping_us_script:
+    - sh tests/allow_lan_to_ping_us.sh
+    - sleep 2 # XXX wait a whie before teardown
