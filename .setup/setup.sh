@@ -30,6 +30,7 @@ jexec firewall ifconfig ${in}a name ${firewall_ifconfig_lan_name}
 jexec firewall ifconfig ${dmz}a name ${firewall_ifconfig_dmz_name}
 jexec firewall sysctl net.inet.ip.forwarding=1
 kldload pf
+service pflog onestart
 jexec firewall pfctl -e
 jexec firewall pfctl -F all -f ${CIRRUS_WORKING_DIR}/pf.conf
 
