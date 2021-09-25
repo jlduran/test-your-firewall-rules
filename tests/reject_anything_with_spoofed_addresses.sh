@@ -9,6 +9,9 @@ spoof()
 	jexec "$1" ifconfig lo1 destroy
 }
 
+jexec wan route add default 192.0.2.2
 spoof "wan" "192.168.1.10" "190.2.0.2"
+jexec wan route delete default 192.0.2.2
+
 spoof "lan" "192.168.2.10" "192.168.1.1"
 spoof "dmz" "192.168.1.10" "192.168.2.1"
