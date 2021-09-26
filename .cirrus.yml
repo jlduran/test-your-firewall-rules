@@ -29,7 +29,7 @@ task:
   tcpdump_lan_background_script: jexec firewall tcpdump -ennlSvvXX -i ${firewall_ifconfig_lan_name}
   tcpdump_dmz_background_script: jexec firewall tcpdump -ennlSvvXX -i ${firewall_ifconfig_dmz_name}
   pflog_background_script: jexec firewall tcpdump -n -e -ttt -i pflog0
-  dns_server_background_script: jexec firewall nc -l 53
+  dns_server_background_script: jexec firewall echo "DNS" | nc -l 53
 
   # XXX Figure out if Cirrus has a matrix similar to GitHub Actions to avoid repetition
   test_nat_outgoing_traffic_script:
