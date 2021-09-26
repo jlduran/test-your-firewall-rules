@@ -33,6 +33,7 @@ kldload pf
 service pflog onestart
 jexec firewall pfctl -e
 jexec firewall pfctl -F all -f ${CIRRUS_WORKING_DIR}/pf.conf
+jexec firewall service sshd onestart
 
 # setup lan
 jexec lan ifconfig ${in}b ${lan_ifconfig}
